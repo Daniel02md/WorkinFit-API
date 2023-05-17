@@ -126,7 +126,7 @@ def deletar_professor(matricula):
 
 
 @app.after_request()
-@cross_origin
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def response_aws():
     request.headers.add('Access-Control-Allow-Origin', '*')
 
