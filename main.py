@@ -55,6 +55,7 @@ def inserir_professor():
 
 
 @app.route('/professor/buscar/<int:matricula>', methods=["GET"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def buscar_professor_por_matricula(matricula = None):
     
     results = {}
@@ -79,6 +80,7 @@ def buscar_professor_por_matricula(matricula = None):
 
 
 @app.route('/professor/buscar', methods=["GET"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def buscar_professor():
     results = {}
     with app.app_context():
@@ -91,6 +93,7 @@ def buscar_professor():
 
 
 @app.route('/professor/atualizar/<int:matricula>', methods=["POST"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def atualizar_professor(matricula):
     with app.app_context():
         
@@ -114,6 +117,7 @@ def atualizar_professor(matricula):
 
 
 @app.route('/professor/deletar/<int:matricula>', methods=['DELETE'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def deletar_professor(matricula):
     with app.app_context():
         professor = db.session.execute(db.select(Professor).where(Professor.matricula == matricula)).first()
