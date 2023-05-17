@@ -21,6 +21,7 @@ db = sa.SQLAlchemy(app)
 
 
 @app.route('/professor/novo', methods=["POST"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def inserir_professor():
     # recebe um formulário
     prof =  Professor(
@@ -125,10 +126,10 @@ def deletar_professor(matricula):
             return jsonify(success=False, error_message= "não existe")
 
 
-@app.after_request()
-@cross_origin(origin='*',headers=['Content-Type','Authorization'])
-def response_aws():
-    request.headers.add('Access-Control-Allow-Origin', '*')
+# @app.after_request()
+# @cross_origin(origin='*',headers=['Content-Type','Authorization'])
+# def response_aws():
+#     request.headers.add('Access-Control-Allow-Origin', '*')
 
 
 if __name__ == '__main__':
