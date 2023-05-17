@@ -11,12 +11,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = sa.SQLAlchemy(app)
 
-def autenticação():
-    auth = request.headers.get('Authorization')
-    if app.config['SECRET_KEY'] in auth:
-        pass
-    else:
-        return jsonify(success=False, error_message="Authorization error. Invalid credential"), 403
+# def autenticação():
+#     auth = request.headers.get('Authorization')
+#     if app.config['SECRET_KEY'] in auth:
+#         pass
+#     else:
+#         return jsonify(success=False, error_message="Authorization error. Invalid credential"), 403
 
 
 @app.route('/professor/novo', methods=["POST"])
@@ -123,5 +123,5 @@ def deletar_professor(matricula):
         else:
             return jsonify(success=False, error_message= "não existe")
 
-
-app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
