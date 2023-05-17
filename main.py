@@ -124,4 +124,4 @@ def deletar_professor(matricula):
             return jsonify(success=False, error_message= "não existe")
 
 
-app.run(host='0.0.0.0')
+app.run(host='0.0.0.0', port=443)
