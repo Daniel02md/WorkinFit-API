@@ -1,6 +1,7 @@
 import flask_sqlalchemy as sa
 from flask import Flask, request, jsonify
 from professor import Professor
+from flask_cors import cross_origin
 import os
 
 app = Flask(__name__)
@@ -122,6 +123,13 @@ def deletar_professor(matricula):
         
         else:
             return jsonify(success=False, error_message= "não existe")
+
+
+@app.after_request()
+@cross_origin
+def response_aws():
+    request.headers.add('Access-Control-Allow-Origin', '*')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
