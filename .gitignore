@@ -1,0 +1,41 @@
+# Arquivos gerados pelos ambientes virtuais
+envs/
+
+# Byte-compiled / otimizados / arquivos em cache
+__pycache__/
+*$py.class
+
+# Arquivos de registro
+*.log
+
+# Arquivos de backup
+*~
+*.bak
+
+# Arquivos de configuração
+*.ini
+
+# Arquivos gerados pelos editores
+.vscode/
+.idea/
+
+# Dependências e pacotes instalados
+*.egg-info/
+dist/
+build/
+venv/
+
+# Arquivo de ambiente virtual
+.env
+
+# Arquivo de banco de dados SQLite
+*.sqlite3
+
+# Arquivos gerados durante o desenvolvimento
+db.sqlite3
+media/
+static/
+
+# Outros arquivos de saída
+*.bak
+*.swp
