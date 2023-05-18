@@ -27,6 +27,7 @@ def inserir_professor():
     prof =  Professor(
         cpf = request.form.get('cpf'),
         nome = request.form.get('nome'),
+        telefone = request.form.get('telefone'),
         email = request.form.get('email'),
         senha = request.form.get('senha'),
         rua = request.form.get('rua'),
@@ -66,6 +67,7 @@ def buscar_professor_por_matricula(matricula = None):
                 'matricula': select_result[0].matricula,
                 'cpf' : select_result[0].cpf,
                 'nome': select_result[0].nome,
+                'telefone': select_result[0].telefone,
                 'email': select_result[0].email,
                 'senha': select_result[0].senha,
                 'rua': select_result[0].rua,
@@ -102,6 +104,7 @@ def atualizar_professor(matricula):
         if professor:
             professor = professor[0]
             professor.nome = request.form.get('nome'),
+            professor.telefone = request.form.get('telefone'),
             professor.email = request.form.get('email'),
             professor.senha = request.form.get('senha'),
             professor.rua = request.form.get('rua'),

@@ -1,9 +1,8 @@
-import flask_sqlalchemy as sa
-
+import flask_sqlalchemy as sa 
 db = sa.SQLAlchemy()
 
-class Professor(db.Model):
-    __tablename__ = "Professor"
+class Aluno(db.Model):
+    __tablename__ = "Alunos"
     matricula = db.Column(db.Integer, primary_key=True, autoincrement=True)
     cpf = db.Column(db.BigInteger, unique=True, nullable=False)
     nome = db.Column(db.String(110), nullable=False)
@@ -26,3 +25,5 @@ class Professor(db.Model):
         self.complemento = complemento
         self.cep = cep
         self.bairro = bairro
+
+    
