@@ -1,6 +1,7 @@
 import flask_sqlalchemy as sa
 from flask import Flask, request, jsonify
 from professor import Professor
+from aluno import Aluno
 from flask_cors import cross_origin
 import os
 
@@ -133,6 +134,119 @@ def deletar_professor(matricula):
             return jsonify(success=False, error_message= "não existe")
 
 
+
+
+@app.route('/aluno/novo', methods=["POST"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
+def inserir_aluno():
+    # recebe um formulário
+    prof =  Aluno(
+        cpf = request.form.get('cpf'),
+        nome = request.form.get('nome'),
+        telefone = request.form.get('telefone'),
+        email = request.form.get('email'),
+        senha = request.form.get('senha'),
+        rua = request.form.get('rua'),
+        complemento = request.form.get('compremento'),
+        cep = request.form.get('cep'),
+        bairro = request.form.get('bairro')
+    )
+    
+    with app.app_context():
+        cpf = db.session.execute(db.select( Aluno).where( Aluno.cpf == request.form.get('cpf'))).first()
+        email = db.session.execute(db.select(Aluno).where(Aluno.email == request.form.get('email'))).first()
+    
+
+        if cpf:
+            return jsonify(success=False, erro_message="cpf existente"), 409
+        elif email:
+            return jsonify(success=False, erro_message="email existente"), 409
+        
+
+        db.session.add(prof)
+        db.session.commit()
+
+    return jsonify(success=True)
+
+
+
+
+@app.route('/aluno/buscar/<int:matricula>', methods=["GET"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
+def buscar_aluno_por_matricula(matricula = None):
+    
+    results = {}
+    with app.app_context():
+        if matricula:
+            select_result = db.session.execute(db.select(Aluno).where(Aluno.matricula == matricula)).first()
+            results = {
+                'matricula': select_result[0].matricula,
+                'cpf' : select_result[0].cpf,
+                'nome': select_result[0].nome,
+                'telefone': select_result[0].telefone,
+                'email': select_result[0].email,
+                'senha': select_result[0].senha,
+                'rua': select_result[0].rua,
+                'complemento': select_result[0].complemento,
+                'cep': select_result[0].cep,
+                'bairro': select_result[0].bairro
+            }
+            return jsonify(success=True, results=results)
+        else:
+            return jsonify(success=False)
+
+
+
+@app.route('/aluno/buscar', methods=["GET"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
+def buscar_aluno():
+    results = {}
+    with app.app_context():
+        select_result = db.session.execute(db.select(Aluno.matricula, Aluno.nome))
+        results = [{'matricula': i[0], 'nome': i[1]} for i in select_result.all()]
+    
+    return jsonify(success=True, results = results)
+    
+
+
+
+@app.route('/aluno/atualizar/<int:matricula>', methods=["POST"])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
+def atualizar_aluno(matricula):
+    with app.app_context():
+        
+        aluno = db.session.execute(db.select(Aluno).where(Aluno.matricula == matricula)).first()
+        
+        if aluno:
+            aluno = aluno[0]
+            aluno.nome = request.form.get('nome'),
+            aluno.telefone = request.form.get('telefone'),
+            aluno.email = request.form.get('email'),
+            aluno.senha = request.form.get('senha'),
+            aluno.rua = request.form.get('rua'),
+            aluno.complemento = request.form.get('compremento'),
+            aluno.cep = request.form.get('cep'),
+            aluno.bairro = request.form.get('bairro')
+            db.session.commit()
+            return jsonify(success=True)
+        
+        else:
+            return jsonify(success=False, error_message= "não existe")
+    
+
+
+@app.route('/aluno/deletar/<int:matricula>', methods=['DELETE'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
+def deletar_aluno(matricula):
+    with app.app_context():
+        aluno = db.session.execute(db.select(Aluno).where(Aluno.matricula == matricula)).first()
+        if aluno:
+            db.session.delete(aluno[0])
+            db.session.commit()
+            return jsonify(success=True)
+        
+        else:
+            return jsonify(success=False, error_message= "não existe")
 # @app.after_request()
 # @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 # def response_aws():
